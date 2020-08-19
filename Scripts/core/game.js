@@ -5,8 +5,8 @@ let Game = (function () {
     let stage;
     let assets;
     let Button;
-    let InitialLeft;
-    let InitialRight;
+    let leftDice;
+    let rightDice;
     let assetManifest = [
         { id: "1", src: "./Assets/images/1.png" },
         { id: "2", src: "./Assets/images/2.png" },
@@ -52,16 +52,49 @@ let Game = (function () {
     function Update() {
         stage.update();
     }
-    function DisplayObjects() {
+    function buildInterface() {
         Button = new UIObjects.Button("rollButton", Config.Game.CENTER_X, Config.Game.CENTER_Y + 100, true);
         stage.addChild(Button);
+        leftDice = new Core.GameObject("1", Config.Game.CENTER_X - 150, Config.Game.CENTER_Y - 80, true);
+        stage.addChild(leftDice);
+        rightDice = new Core.GameObject("1", Config.Game.CENTER_X + 150, Config.Game.CENTER_Y - 80, true);
+        stage.addChild(rightDice);
+    }
+    function Roll() {
+        let diceValue = [" ", " "];
+        var outCome = [0, 0];
+        for (let roll = 0; roll < 2; roll++) {
+            outCome[roll] = Math.floor((Util.Mathf.RandomRange(1, 7)));
+            switch (outCome[roll]) {
+                case outCome[roll] = 1:
+                    diceValue[roll] = "1";
+                    break;
+                case outCome[roll] = 2:
+                    diceValue[roll] = "2";
+                    break;
+                case outCome[roll] = 3:
+                    diceValue[roll] = "3";
+                    break;
+                case outCome[roll] = 4:
+                    diceValue[roll] = "4";
+                    break;
+                case outCome[roll] = 5:
+                    diceValue[roll] = "5";
+                    break;
+                case outCome[roll] = 6:
+                    diceValue[roll] = "6";
+                    break;
+            }
+        }
+        return diceValue;
+    }
+    function interfaceLogic() {
         Button.on("click", () => {
             console.log("roll button clicked");
+            let clickRoll = Roll();
+            leftDice.image = assets.getResult(clickRoll[0]);
+            rightDice.image = assets.getResult(clickRoll[1]);
         });
-        InitialLeft = new Core.GameObject("1", Config.Game.CENTER_X - 150, Config.Game.CENTER_Y - 80, true);
-        stage.addChild(InitialLeft);
-        InitialRight = new Core.GameObject("1", Config.Game.CENTER_X + 150, Config.Game.CENTER_Y - 80, true);
-        stage.addChild(InitialRight);
     }
     /**
      * This is the main function of the Game (where all the fun happens)
@@ -69,7 +102,8 @@ let Game = (function () {
      */
     function Main() {
         console.log(`%c Main Function`, "color: grey; font-size: 14px; font-weight: bold;");
-        DisplayObjects();
+        buildInterface();
+        interfaceLogic();
     }
     window.addEventListener('load', Preload);
 })();

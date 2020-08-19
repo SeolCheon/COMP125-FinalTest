@@ -8,8 +8,8 @@ let Game = (function(){
 
     
     let Button: UIObjects.Button;
-    let InitialLeft: Core.GameObject;
-    let InitialRight: Core.GameObject;    
+    let leftDice: Core.GameObject;
+    let rightDice: Core.GameObject;    
 
     let assetManifest = 
     [
@@ -65,20 +65,57 @@ let Game = (function(){
     {
         stage.update();
     }
-    function DisplayObjects()
+    function buildInterface():void
     {
         Button = new UIObjects.Button("rollButton", Config.Game.CENTER_X, Config.Game.CENTER_Y + 100, true);
         stage.addChild(Button);
+      
 
+        leftDice = new Core.GameObject("1", Config.Game.CENTER_X-150, Config.Game.CENTER_Y-80, true);
+        stage.addChild(leftDice);
+
+        rightDice = new Core.GameObject("1", Config.Game.CENTER_X+150, Config.Game.CENTER_Y-80, true);
+        stage.addChild(rightDice);
+    }
+    
+    function Roll():string[]
+    {
+        let diceValue = [" ", " "];
+        var outCome = [0, 0];
+        for (let roll = 0; roll < 2; roll++) {
+            outCome[roll] = Math.floor((Util.Mathf.RandomRange(1,7)));
+            switch (outCome[roll]) {
+                case outCome[roll]=1:  
+                    diceValue[roll] = "1";
+                    break;
+                case outCome[roll]=2:  
+                    diceValue[roll] = "2";
+                    break;
+                case outCome[roll]=3:  
+                    diceValue[roll] = "3";
+                    break;
+                case outCome[roll]=4:  
+                    diceValue[roll] = "4";
+                    break;
+                case outCome[roll]=5:  
+                    diceValue[roll] = "5";
+                    break;
+                case outCome[roll]=6:  
+                    diceValue[roll] = "6";
+                    break;    
+            }
+        }return diceValue;
+
+    }
+    
+    function interfaceLogic():void
+    {
         Button.on("click", ()=>{
             console.log("roll button clicked");
+            let clickRoll = Roll();
+            leftDice.image = assets.getResult(clickRoll[0]) as HTMLImageElement;
+            rightDice.image = assets.getResult(clickRoll[1]) as HTMLImageElement;
         });
-
-        InitialLeft = new Core.GameObject("1", Config.Game.CENTER_X-150, Config.Game.CENTER_Y-80, true);
-        stage.addChild(InitialLeft);
-
-        InitialRight = new Core.GameObject("1", Config.Game.CENTER_X+150, Config.Game.CENTER_Y-80, true);
-        stage.addChild(InitialRight);
     }
 
     /**
@@ -89,7 +126,8 @@ let Game = (function(){
     {
         console.log(`%c Main Function`, "color: grey; font-size: 14px; font-weight: bold;");
 
-        DisplayObjects();   
+        buildInterface();   
+        interfaceLogic();
 
         
     }
