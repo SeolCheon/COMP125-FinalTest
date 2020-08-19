@@ -9,6 +9,7 @@ let Game = (function () {
     let rightDice;
     let leftNumber;
     let rightNumber;
+    //variable for manifesting assets(id and path)
     let assetManifest = [
         { id: "1", src: "./Assets/images/1.png" },
         { id: "2", src: "./Assets/images/2.png" },
@@ -27,12 +28,13 @@ let Game = (function () {
         { id: "startButton", src: "./Assets/images/startButton.png" },
         { id: "startOverButton", src: "./Assets/images/startOverButton.png" }
     ];
+    //function that will be implemented before loading the page
     function Preload() {
         console.log(`%c Preload Function`, "color: grey; font-size: 14px; font-weight: bold;");
         assets = new createjs.LoadQueue(); // asset container 
         assets.installPlugin(createjs.Sound); // supports sound preloading
-        assets.loadManifest(assetManifest);
-        assets.on("complete", Start);
+        assets.loadManifest(assetManifest); // load manifest
+        assets.on("complete", Start); // implement Start function           
     }
     /**
      * This method initializes the CreateJS (EaselJS) Library
@@ -40,12 +42,12 @@ let Game = (function () {
      */
     function Start() {
         console.log(`%c Start Function`, "color: grey; font-size: 14px; font-weight: bold;");
-        stage = new createjs.Stage(canvas);
+        stage = new createjs.Stage(canvas); //create new canvas
         createjs.Ticker.framerate = Config.Game.FPS;
         createjs.Ticker.on('tick', Update);
         stage.enableMouseOver(20);
         Config.Game.ASSETS = assets; // make a reference to the assets in the global config
-        Main();
+        Main(); //implement Main function
     }
     /**
      * This function is triggered every frame (16ms)
@@ -54,18 +56,23 @@ let Game = (function () {
     function Update() {
         stage.update();
     }
+    //function for creating objects
     function buildInterface() {
+        //create button
         Button = new UIObjects.Button("rollButton", Config.Game.CENTER_X, Config.Game.CENTER_Y + 100, true);
         stage.addChild(Button);
+        //create two dices
         leftDice = new Core.GameObject("1", Config.Game.CENTER_X - 150, Config.Game.CENTER_Y - 80, true);
         stage.addChild(leftDice);
         rightDice = new Core.GameObject("1", Config.Game.CENTER_X + 150, Config.Game.CENTER_Y - 80, true);
         stage.addChild(rightDice);
+        //create two text labels under two dices respectively
         leftNumber = new UIObjects.Label("1", "20px", "Consolas", "#000000", Config.Game.CENTER_X - 150, Config.Game.CENTER_Y + 35, true);
         stage.addChild(leftNumber);
         rightNumber = new UIObjects.Label("1", "20px", "Consolas", "#000000", Config.Game.CENTER_X + 150, Config.Game.CENTER_Y + 35, true);
         stage.addChild(rightNumber);
     }
+    //function for changing dicValue when you click button
     function diceRoll() {
         let diceValue = [" ", " "];
         let outCome = [0, 0];
@@ -94,38 +101,12 @@ let Game = (function () {
         }
         return diceValue;
     }
-    /*function textRoll():string[]
-    {
-        let textValue = [" ", " "];
-        var textOutcome = [0, 0];
-        for (let roll = 0; roll < 2; roll++) {
-            textOutcome[roll] = Math.floor((Util.Mathf.RandomRange(1,6)));
-            switch (textOutcome[roll]) {
-                case textOutcome[roll]=1:
-                    textValue[roll] = "1";
-                    break;
-                case textOutcome[roll]=2:
-                    textValue[roll] = "2";
-                    break;
-                case textOutcome[roll]=3:
-                    textValue[roll] = "3";
-                    break;
-                case textOutcome[roll]=4:
-                    textValue[roll] = "4";
-                    break;
-                case textOutcome[roll]=5:
-                    textValue[roll] = "5";
-                    break;
-                case textOutcome[roll]=6:
-                    textValue[roll] = "6";
-                    break;
-            }
-        }return textValue;
-
-    }*/
+    //function for Logic
     function interfaceLogic() {
         Button.on("click", () => {
+            //show this message whenever you click the roll button
             console.log("roll button clicked");
+            //change dice image and change textLabel depending on dice image
             let dice = diceRoll();
             leftDice.image = assets.getResult(dice[0]);
             leftNumber.setText(dice[0].toString());
@@ -139,6 +120,7 @@ let Game = (function () {
      */
     function Main() {
         console.log(`%c Main Function`, "color: grey; font-size: 14px; font-weight: bold;");
+        //implement functions when you load the page
         buildInterface();
         interfaceLogic();
     }
