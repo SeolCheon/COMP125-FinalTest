@@ -83,7 +83,7 @@ let Game = (function(){
         let diceValue = [" ", " "];
         var outCome = [0, 0];
         for (let roll = 0; roll < 2; roll++) {
-            outCome[roll] = Math.floor((Util.Mathf.RandomRange(1,7)));
+            outCome[roll] = Math.floor((Util.Mathf.RandomRange(1,6)));
             switch (outCome[roll]) {
                 case outCome[roll]=1:  
                     diceValue[roll] = "1";
