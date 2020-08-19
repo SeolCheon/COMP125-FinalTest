@@ -5,11 +5,14 @@ let Game = (function(){
     let stage:createjs.Stage;
     
     let assets: createjs.LoadQueue;
-
     
     let Button: UIObjects.Button;
+
     let leftDice: Core.GameObject;
-    let rightDice: Core.GameObject;    
+    let rightDice: Core.GameObject;  
+
+    let leftNumber: UIObjects.Label;
+    let rightNumber: UIObjects.Label;  
 
     let assetManifest = 
     [
@@ -76,45 +79,94 @@ let Game = (function(){
 
         rightDice = new Core.GameObject("1", Config.Game.CENTER_X+150, Config.Game.CENTER_Y-80, true);
         stage.addChild(rightDice);
+
+        leftNumber = new UIObjects.Label("1", "20px", "Consolas", "#000000", Config.Game.CENTER_X-150, Config.Game.CENTER_Y+35, true);
+        stage.addChild(leftNumber);
+
+        rightNumber = new UIObjects.Label("1", "20px", "Consolas", "#000000", Config.Game.CENTER_X+150, Config.Game.CENTER_Y+35, true);
+        stage.addChild(rightNumber);
+
     }
     
-    function Roll():string[]
+    function diceRoll():string[] 
     {
         let diceValue = [" ", " "];
-        var outCome = [0, 0];
+        let outCome = [0, 0];
+        
         for (let roll = 0; roll < 2; roll++) {
             outCome[roll] = Math.floor((Util.Mathf.RandomRange(1,6)));
             switch (outCome[roll]) {
                 case outCome[roll]=1:  
                     diceValue[roll] = "1";
+                    
                     break;
                 case outCome[roll]=2:  
                     diceValue[roll] = "2";
+                    
                     break;
                 case outCome[roll]=3:  
                     diceValue[roll] = "3";
+                    
                     break;
                 case outCome[roll]=4:  
                     diceValue[roll] = "4";
+                    
                     break;
                 case outCome[roll]=5:  
                     diceValue[roll] = "5";
+                    
                     break;
                 case outCome[roll]=6:  
                     diceValue[roll] = "6";
+                    
                     break;    
             }
         }return diceValue;
-
+        
     }
+
+   
+
+    /*function textRoll():string[]
+    {
+        let textValue = [" ", " "];
+        var textOutcome = [0, 0];
+        for (let roll = 0; roll < 2; roll++) {
+            textOutcome[roll] = Math.floor((Util.Mathf.RandomRange(1,6)));
+            switch (textOutcome[roll]) {
+                case textOutcome[roll]=1:  
+                    textValue[roll] = "1";
+                    break;
+                case textOutcome[roll]=2:  
+                    textValue[roll] = "2";
+                    break;
+                case textOutcome[roll]=3:  
+                    textValue[roll] = "3";
+                    break;
+                case textOutcome[roll]=4:  
+                    textValue[roll] = "4";
+                    break;
+                case textOutcome[roll]=5:  
+                    textValue[roll] = "5";
+                    break;
+                case textOutcome[roll]=6:  
+                    textValue[roll] = "6";
+                    break;    
+            }
+        }return textValue;
+
+    }*/
     
     function interfaceLogic():void
     {
         Button.on("click", ()=>{
             console.log("roll button clicked");
-            let clickRoll = Roll();
-            leftDice.image = assets.getResult(clickRoll[0]) as HTMLImageElement;
-            rightDice.image = assets.getResult(clickRoll[1]) as HTMLImageElement;
+            let dice = diceRoll();
+            leftDice.image = assets.getResult(dice[0]) as HTMLImageElement;  
+            leftNumber.setText(dice[0].toString());  
+            rightDice.image = assets.getResult(dice[1]) as HTMLImageElement;
+            rightNumber.setText(dice[1].toString());
+            
         });
     }
 
