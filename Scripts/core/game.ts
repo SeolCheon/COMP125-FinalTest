@@ -88,14 +88,14 @@ let Game = (function(){
         Button = new UIObjects.Button("rollButton", Config.Game.CENTER_X, Config.Game.CENTER_Y + 100, true);
         stage.addChild(Button);    
 
-        //create two dices
+        //create two dices(it initializes both dice image number as 1)
         leftDice = new Core.GameObject("1", Config.Game.CENTER_X-150, Config.Game.CENTER_Y-80, true);
         stage.addChild(leftDice);
 
         rightDice = new Core.GameObject("1", Config.Game.CENTER_X+150, Config.Game.CENTER_Y-80, true);
         stage.addChild(rightDice);
 
-        //create two text labels under two dices respectively(it initializes both dice number as 1)
+        //create two text labels under two dices respectively(it initializes both dice number text as 1)
         leftNumber = new UIObjects.Label("1", "20px", "Consolas", "#000000", Config.Game.CENTER_X-150, Config.Game.CENTER_Y+35, true);
         stage.addChild(leftNumber);
 
