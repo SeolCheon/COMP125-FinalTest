@@ -1,4 +1,12 @@
 "use strict";
+/*File name : game.ts
+  Author's name : Seol Cheon
+  Student Id : 301113120
+  Date : 20th August 2020
+  file description: a typescript file that will transpile to game.js.
+  overview :  Use your accumulated knowledge of various libraries and frameworks demonstrated in class
+            to build a dice roller. Your game will display a random result of two dies set side by side within the
+            webpage. Each time the player presses the Roll button the dice result displayed will change.*/
 let Game = (function () {
     // variable declarations
     let canvas = document.getElementsByTagName('canvas')[0];
@@ -44,7 +52,7 @@ let Game = (function () {
         console.log(`%c Start Function`, "color: grey; font-size: 14px; font-weight: bold;");
         stage = new createjs.Stage(canvas); //create new canvas
         createjs.Ticker.framerate = Config.Game.FPS;
-        createjs.Ticker.on('tick', Update);
+        createjs.Ticker.on('tick', Update); //sets the framerate to 60 FPS
         stage.enableMouseOver(20);
         Config.Game.ASSETS = assets; // make a reference to the assets in the global config
         Main(); //implement Main function
@@ -56,7 +64,9 @@ let Game = (function () {
     function Update() {
         stage.update();
     }
-    //function for creating objects
+    /**
+     * This function creates objects
+     */
     function buildInterface() {
         //create button
         Button = new UIObjects.Button("rollButton", Config.Game.CENTER_X, Config.Game.CENTER_Y + 100, true);
@@ -66,13 +76,15 @@ let Game = (function () {
         stage.addChild(leftDice);
         rightDice = new Core.GameObject("1", Config.Game.CENTER_X + 150, Config.Game.CENTER_Y - 80, true);
         stage.addChild(rightDice);
-        //create two text labels under two dices respectively
+        //create two text labels under two dices respectively(it initializes both dice number as 1)
         leftNumber = new UIObjects.Label("1", "20px", "Consolas", "#000000", Config.Game.CENTER_X - 150, Config.Game.CENTER_Y + 35, true);
         stage.addChild(leftNumber);
         rightNumber = new UIObjects.Label("1", "20px", "Consolas", "#000000", Config.Game.CENTER_X + 150, Config.Game.CENTER_Y + 35, true);
         stage.addChild(rightNumber);
     }
-    //function for changing dicValue when you click button
+    /**
+     * This function makes dice value randomly decided
+     */
     function diceRoll() {
         let diceValue = [" ", " "];
         let outCome = [0, 0];
@@ -101,17 +113,20 @@ let Game = (function () {
         }
         return diceValue;
     }
-    //function for Logic
+    /**
+     * This function makes dice images randomly roll
+     * and textLabel also roll depending on dice image
+     */
     function interfaceLogic() {
         Button.on("click", () => {
             //show this message whenever you click the roll button
             console.log("roll button clicked");
             //change dice image and change textLabel depending on dice image
             let dice = diceRoll();
-            leftDice.image = assets.getResult(dice[0]);
-            leftNumber.setText(dice[0].toString());
-            rightDice.image = assets.getResult(dice[1]);
-            rightNumber.setText(dice[1].toString());
+            leftDice.image = assets.getResult(dice[0]); //left dice image
+            leftNumber.setText(dice[0].toString()); //left textLabel
+            rightDice.image = assets.getResult(dice[1]); //right dice image
+            rightNumber.setText(dice[1].toString()); //right textLabel
         });
     }
     /**
